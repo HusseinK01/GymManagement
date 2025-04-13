@@ -1,4 +1,5 @@
-﻿using GymManagement.Application.Subscriptions.Commands.CreateSubscription;
+﻿using ErrorOr;
+using GymManagement.Application.Subscriptions.Commands.CreateSubscription;
 using GymManagement.Contracts.Subscriptions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -22,10 +23,14 @@ namespace GymManagement.Api.Controllers
         {
             var command = new CreateSubscriptionCommand(request.AdminId, request.SubscriptionType.ToString());
 
-            var subscriptionId = await mediator.Send(command);
+            ErrorOr.ErrorOr<Guid> createSubscriptionResult = await mediator.Send(command);
 
-            var response = new CreateSubscriptionResponse(subscriptionId, request.SubscriptionType);
-            return Ok(response);
+
+            return createSubscriptionResult.MatchFirst(
+
+                guid => Ok(new CreateSubscriptionResponse(guid, request.SubscriptionType)),
+                error => Problem()
+                );
 
         }
     }

@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using GymManagement.Application.Common;
+using GymManagement.Infrastructure.Subscriptions.Persistance;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,7 @@ namespace GymManagement.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection serviceCollection)
         {
+            serviceCollection.AddScoped<ISubscriptionRepository, SubscriptionsRepository>();
             return serviceCollection;
         }
     }

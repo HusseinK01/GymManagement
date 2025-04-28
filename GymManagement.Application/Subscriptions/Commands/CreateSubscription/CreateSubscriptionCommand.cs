@@ -1,4 +1,5 @@
 ﻿using ErrorOr;
+using GymManagement.Domain.Subscriptions;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GymManagement.Application.Subscriptions.Commands.CreateSubscription
 {
-    public class CreateSubscriptionCommand : IRequest<ErrorOr<Guid>>
+    public class CreateSubscriptionCommand : IRequest<ErrorOr<Subscription>>
     {
         public CreateSubscriptionCommand(Guid adminId, string subscriptionType)
         {

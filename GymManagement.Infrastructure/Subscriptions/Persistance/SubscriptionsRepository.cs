@@ -1,5 +1,7 @@
 ﻿using GymManagement.Application.Common;
 using GymManagement.Domain.Subscriptions;
+using GymManagement.Infrastructure.Common.Persistance;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,20 +12,24 @@ namespace GymManagement.Infrastructure.Subscriptions.Persistance
 {
     class SubscriptionsRepository : ISubscriptionRepository
     {
-        private readonly static List<Subscription> subscriptions = new();
+        private readonly GymManagementDbContext _dbcontext;
 
-
-        public Task AddSubscriptionAsync(Subscription subscription)
+        public SubscriptionsRepository(GymManagementDbContext dbcontext)
         {
-            subscriptions.Add(subscription);
-            return Task.CompletedTask;
+            _dbcontext = dbcontext;
         }
 
-        public Task<Subscription?> GetSubscriptionAsync(Guid subscriptionId)
+        public async Task AddSubscriptionAsync(Subscription subscription)
+        {
+            await _dbcontext.Subscriptions.AddAsync(subscription);
+        }
+
+        public async Task<Subscription?> GetSubscriptionAsync(Guid subscriptionId)
         {
 
-            Subscription subscription = subscriptions.FirstOrDefault(s => s.Id == subscriptionId);
-            return Task.FromResult(subscription);
+           var res = await _dbcontext.Subscriptions.FindAsync(subscriptionId);
+
+            return res;
             
         }
     }

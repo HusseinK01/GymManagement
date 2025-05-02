@@ -11,13 +11,13 @@ namespace GymManagement.Application.Subscriptions.Commands.CreateSubscription
 {
     public class CreateSubscriptionCommand : IRequest<ErrorOr<Subscription>>
     {
-        public CreateSubscriptionCommand(Guid adminId, string subscriptionType)
+        public CreateSubscriptionCommand(Guid adminId, SubscriptionType subscriptionType)
         {
             AdminId = adminId;
             SubscriptionType = subscriptionType;
         }
 
         public Guid AdminId { get; }
-        public string SubscriptionType { get; }
+        public SubscriptionType SubscriptionType { get; }
     }
 }
